@@ -15,20 +15,23 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $query = Product::query();
-        //   min
+
+        // min price
         if ($request->has('min_price')) {
             $query->where('price', '>=', $request->min_price);
         }
 
-        //   max
+        // max price
         if ($request->has('max_price')) {
             $query->where('price', '<=', $request->max_price);
         }
 
         $products = $query->get();
 
-
-        return response()->json($products, ['message' => 'product list']);
+        return response()->json([
+            'message' => 'Product list',
+            'data'    => $products
+        ], 200);
     }
 
     /**
@@ -37,7 +40,11 @@ class ProductController extends Controller
     public function store(storeProductRequest $request)
     {
         $product = Product::create($request->all());
-        return response()->json($product, ['message' => 'product created successfly', 201]);
+
+        return response()->json([
+            'message' => 'Product created successfully',
+            'data'    => $product
+        ], 201);
     }
 
     /**
@@ -45,7 +52,10 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return response()->json($product, ['message' => 'product details']);
+        return response()->json([
+            'message' => 'Product details',
+            'data'    => $product
+        ], 200);
     }
 
     /**
@@ -54,7 +64,11 @@ class ProductController extends Controller
     public function update(storeProductRequest $request, Product $product)
     {
         $product->update($request->all());
-        return response()->json(['message' => 'product updated successfly']);
+
+        return response()->json([
+            'message' => 'Product updated successfully',
+            'data'    => $product
+        ], 200);
     }
 
     /**
@@ -63,6 +77,9 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return response()->json(['message' => 'product deleted successfly']);
+
+        return response()->json([
+            'message' => 'Product deleted successfully'
+        ], 200);
     }
 }
